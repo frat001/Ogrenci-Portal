@@ -44,7 +44,7 @@ namespace StudentPortal_Core.Entities.Concrete
         public IFormFile? Project { get; set; }
 
 
-        public int ClassroomId { get; set; }
+        public int? ClassroomId { get; set; }
         public Classroom Classroom { get; set; }
 
     }

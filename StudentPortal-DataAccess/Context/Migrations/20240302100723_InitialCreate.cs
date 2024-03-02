@@ -23,6 +23,7 @@ namespace StudentPortal_DataAccess.Context.Migrations
                     FirstName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     LastName = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     Email = table.Column<string>(type: "text", nullable: true),
+                    BirthDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
@@ -39,7 +40,6 @@ namespace StudentPortal_DataAccess.Context.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ClassroomNo = table.Column<byte>(type: "smallint", nullable: false),
                     ClassroomName = table.Column<string>(type: "text", nullable: true),
                     ClassroomDescription = table.Column<string>(type: "text", nullable: true),
                     TeacherId = table.Column<int>(type: "integer", nullable: false),
@@ -73,7 +73,7 @@ namespace StudentPortal_DataAccess.Context.Migrations
                     Exam2 = table.Column<double>(type: "double precision", nullable: true),
                     ProjectExam = table.Column<double>(type: "double precision", nullable: true),
                     ProjectPath = table.Column<string>(type: "text", nullable: true),
-                    ClassroomId = table.Column<int>(type: "integer", nullable: false),
+                    ClassroomId = table.Column<int>(type: "integer", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
@@ -86,27 +86,26 @@ namespace StudentPortal_DataAccess.Context.Migrations
                         name: "FK_Students_Classrooms_ClassroomId",
                         column: x => x.ClassroomId,
                         principalTable: "Classrooms",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.InsertData(
                 table: "Teachers",
-                columns: new[] { "Id", "CreatedDate", "DeletedDate", "Email", "FirstName", "LastName", "Status", "UpdatedDate" },
-                values: new object[] { 1, new DateTime(2024, 2, 17, 14, 10, 40, 933, DateTimeKind.Local).AddTicks(5690), null, "teacher@test.com", "Öğretmen - 1", "Öğretmen - 1", 1, null });
+                columns: new[] { "Id", "BirthDate", "CreatedDate", "DeletedDate", "Email", "FirstName", "LastName", "Status", "UpdatedDate" },
+                values: new object[] { 1, null, new DateTime(2024, 3, 2, 13, 7, 23, 736, DateTimeKind.Local).AddTicks(7124), null, "teacher@test.com", "Öğretmen - 1", "Öğretmen - 1", 1, null });
 
             migrationBuilder.InsertData(
                 table: "Classrooms",
-                columns: new[] { "Id", "ClassroomDescription", "ClassroomName", "ClassroomNo", "CreatedDate", "DeletedDate", "Status", "TeacherId", "UpdatedDate" },
-                values: new object[] { 1, "320 Saat .NET Full Stack Yazılım Uzmanlığı Eğitimi", "YZL-8445", (byte)10, new DateTime(2024, 2, 17, 14, 10, 40, 933, DateTimeKind.Local).AddTicks(6239), null, 1, 1, null });
+                columns: new[] { "Id", "ClassroomDescription", "ClassroomName", "CreatedDate", "DeletedDate", "Status", "TeacherId", "UpdatedDate" },
+                values: new object[] { 1, "320 Saat .NET Full Stack Yazılım Uzmanlığı Eğitimi", "YZL-8445", new DateTime(2024, 3, 2, 13, 7, 23, 736, DateTimeKind.Local).AddTicks(7935), null, 1, 1, null });
 
             migrationBuilder.InsertData(
                 table: "Students",
                 columns: new[] { "Id", "BirthDate", "ClassroomId", "CreatedDate", "DeletedDate", "Email", "Exam1", "Exam2", "FirstName", "LastName", "ProjectExam", "ProjectPath", "Status", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(1996, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, new DateTime(2024, 2, 17, 14, 10, 40, 933, DateTimeKind.Local).AddTicks(6558), null, "student@test.com", null, null, "Öğrenci - 1", "Öğrenci - 1", null, null, 1, null },
-                    { 2, new DateTime(1996, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, new DateTime(2024, 2, 17, 14, 10, 40, 933, DateTimeKind.Local).AddTicks(6566), null, "student2@test.com", null, null, "Öğrenci - 2", "Öğrenci - 2", null, null, 1, null }
+                    { 1, new DateTime(1996, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, new DateTime(2024, 3, 2, 13, 7, 23, 736, DateTimeKind.Local).AddTicks(8323), null, "student@test.com", null, null, "Öğrenci - 1", "Öğrenci - 1", null, null, 1, null },
+                    { 2, new DateTime(1996, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, new DateTime(2024, 3, 2, 13, 7, 23, 736, DateTimeKind.Local).AddTicks(8333), null, "student2@test.com", null, null, "Öğrenci - 2", "Öğrenci - 2", null, null, 1, null }
                 });
 
             migrationBuilder.CreateIndex(

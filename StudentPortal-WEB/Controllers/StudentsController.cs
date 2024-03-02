@@ -58,11 +58,16 @@ namespace StudentPortal_WEB.Controllers
                 var student = await _studentRepo.GetByIdAsync(id);
                 if (student is not null)
                 {
+
                     var model = _mapper.Map<GetStudentDetailDTO>(student);
-                    var classroom = await _classroomRepo.GetByIdAsync(student.ClassroomId);
-                    var teacher = await _teacherRepo.GetByIdAsync(classroom.TeacherId);
-                    model.ClassroomName = classroom.ClassroomName;
-                    model.TeacherName = teacher.FirstName + " " + teacher.LastName;
+                    if (student.ClassroomId is not null)
+                    {
+                        var classroom = await _classroomRepo.GetByIdAsync((int)student.ClassroomId);
+                        var teacher = await _teacherRepo.GetByIdAsync(classroom.TeacherId);
+                        model.ClassroomName = classroom.ClassroomName;
+                        model.TeacherName = teacher.FirstName + " " + teacher.LastName;
+                    }
+                    
                     return View(model);
                 }
             }

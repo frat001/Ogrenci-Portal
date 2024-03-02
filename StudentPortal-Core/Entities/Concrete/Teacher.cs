@@ -26,6 +26,7 @@ namespace StudentPortal_Core.Entities.Concrete
         public string LastName { get; set; }
 
         public string? Email { get; set; }
+        public DateTime? BirthDate { get; set; }
 
         public List<Classroom> Classrooms { get; set; }
     }

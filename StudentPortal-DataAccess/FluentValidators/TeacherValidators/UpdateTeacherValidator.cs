@@ -40,6 +40,10 @@ namespace StudentPortal_DataAccess.FluentValidators.TeacherValidators
                .WithMessage("Email alanı zorunludur!")
                .EmailAddress()
                .WithMessage("Lütfen bir mail giriniz!");
+
+            RuleFor(x => x.BirthDate)
+                .NotEmpty()
+                .WithMessage("Doğum tarihi zorunludur!");
         }
     }
 }

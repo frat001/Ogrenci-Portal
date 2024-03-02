@@ -18,6 +18,7 @@
                                 <th>İsim</th>
                                 <th>Soyisim</th>
                                 <th>E - Mail</th>
+                                <th>Doğum Tarihi</th>
                                 <th>Eklenme Tarihi</th>
                                 <th>Güncellenme Tarihi</th>
                                 <th>Durum</th>
@@ -33,6 +34,14 @@
                                     <td>@teacher.FirstName</td>
                                     <td>@teacher.LastName</td>
                                     <td>@teacher.Email</td>
+                                    @if (teacher.BirthDate is not null)
+                                    {
+                                        <td>@teacher.BirthDate.Value.ToShortDateString()</td>
+                                    }
+                                    else
+                                    {
+                                       <td> - </td>
+                                    }
                                     <td>@teacher.CreatedDate</td>
                                     @if (@teacher.UpdatedDate is not null)
                                     {

@@ -29,6 +29,7 @@ namespace StudentPortal_WEB.Controllers
                         FirstName = x.FirstName,
                         LastName = x.LastName,
                         Email = x.Email,
+                        BirthDate = x.BirthDate,
                         CreatedDate = x.CreatedDate,
                         UpdatedDate = x.UpdatedDate,
                         Status = x.Status

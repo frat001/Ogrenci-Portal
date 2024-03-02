@@ -20,6 +20,9 @@ namespace StudentPortal_Core.DTO_s.TeacherDTO
         [Display(Name = "E-Mail")]
         public string? Email { get; set; }
 
+        [Display(Name = "Doğum Tarihi")]
+        public DateTime? BirthDate { get; set; }
+
         public DateTime CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
 

@@ -4,10 +4,12 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using StudentPortal_Core.DTO_s.AccountDTO;
 using StudentPortal_Core.Entities.UserEntites.Concrete;
 using StudentPortal_DataAccess.Context;
 using StudentPortal_DataAccess.Context.IdentityContext;
 using StudentPortal_DataAccess.DependencyResolvers.Autofac;
+using StudentPortal_DataAccess.FluentValidators.AccountValidators;
 using StudentPortal_DataAccess.FluentValidators.ClassroomValidators;
 using StudentPortal_DataAccess.FluentValidators.StudentValidators;
 using StudentPortal_DataAccess.FluentValidators.TeacherValidators;
@@ -28,10 +30,11 @@ namespace StudentPortal_WEB
             builder.Services.AddValidatorsFromAssemblyContaining<UpdateClassroomValidator>();
             builder.Services.AddValidatorsFromAssemblyContaining<CreateStudentValidator>();
             builder.Services.AddValidatorsFromAssemblyContaining<UpdateStudentValidator>();
+            builder.Services.AddValidatorsFromAssemblyContaining<RegisterValidator>();
             builder.Services.AddFluentValidationAutoValidation();
             builder.Services.AddFluentValidationClientsideAdapters();
 
-            //Autofac kurulumu
+            //Autofac 
             builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
                         .ConfigureContainer<ContainerBuilder>(builder =>
                         {

@@ -14,6 +14,10 @@ namespace StudentPortal_Core.Entities.UserEntites.Concrete
         private DateTime _createdDate = DateTime.Now;
         private Status _status = Status.Active;
 
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public DateTime? BirthDate { get; set; }
+
         public DateTime CreatedDate { get => _createdDate; set => _createdDate = value; }
         public DateTime? UpdatedDate { get; set; }
         public DateTime? DeletedDate { get; set; }
