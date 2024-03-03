@@ -2,8 +2,6 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-$('body').ready(function () {
-    setTimeout(function () {
-        $('.notification').fadeOut("slow")
-    }, 3000);
-})
+    setTimeout(() => {
+        $('div.alert.notification').fadeOut("slow")
+}, 3000);

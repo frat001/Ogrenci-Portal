@@ -31,6 +31,8 @@ namespace StudentPortal_WEB
             builder.Services.AddValidatorsFromAssemblyContaining<CreateStudentValidator>();
             builder.Services.AddValidatorsFromAssemblyContaining<UpdateStudentValidator>();
             builder.Services.AddValidatorsFromAssemblyContaining<RegisterValidator>();
+            builder.Services.AddValidatorsFromAssemblyContaining<LoginValidator>();
+            builder.Services.AddValidatorsFromAssemblyContaining<EditUserValidator>();
             builder.Services.AddFluentValidationAutoValidation();
             builder.Services.AddFluentValidationClientsideAdapters();
 

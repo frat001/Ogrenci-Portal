@@ -1,7 +1,7 @@
 ﻿@{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "EditUser";
 }
-@model RegisterDTO
+@model EditUserDTO
 
 <div class="row">
     <div class="col-md-8">
@@ -9,21 +9,34 @@
             <div class="card-header">
                 <h3 class="card-title">Kayıt Ol</h3>
             </div>
-            <form asp-action="Register">
+            <form asp-action="EditUser">
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="CreatedDate" />
+                <input type="hidden" asp-for="UpdatedDate" />
+                <input type="hidden" asp-for="FirstName" />
+                <input type="hidden" asp-for="LastName" />
+                <input type="hidden" asp-for="UserName" />
+                <input type="hidden" asp-for="BirthDate" />
+                
                 <div class="card-body">
                     <div>
                         <label asp-for="FirstName" class="form-label"></label>
-                        <input asp-for="FirstName" class="form-control" />
+                        <input disabled asp-for="FirstName" class="form-control" />
                         <span asp-validation-for="FirstName" class="text-danger"></span>
                     </div>
                     <div>
                         <label asp-for="LastName" class="form-label"></label>
-                        <input asp-for="LastName" class="form-control" />
+                        <input disabled asp-for="LastName" class="form-control" />
                         <span asp-validation-for="LastName" class="text-danger"></span>
                     </div>
                     <div>
+                        <label asp-for="UserName" class="form-label"></label>
+                        <input disabled asp-for="UserName" class="form-control" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                    <div>
                         <label asp-for="BirthDate" class="form-label"></label>
-                        <input type="date" asp-for="BirthDate" class="form-control" />
+                        <input disabled type="text" asp-for="BirthDate" class="form-control" />
                         <span asp-validation-for="BirthDate" class="text-danger"></span>
                     </div>
                     <div>
@@ -36,20 +49,9 @@
                         <input type="password" asp-for="Password" class="form-control" />
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
-                    <div>
-                        <label asp-for="RoleId" class="form-label"></label>
-                        <select asp-for="RoleId" class="form-control">
-                            <option disabled selected value="0">Lütfen bir rol seçiniz</option>
-                            @foreach (var role in Model.Roles)
-                            {
-                                <option value="@role.Id">@role.Name </option>
-                            }
-                        </select>
-                        <span asp-validation-for="RoleId" class="text-danger"></span>
-                    </div>
                 </div>
                 <div class="card-footer d-flex align-items-center justify-content-between" style="height:50px;">
-                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-dark">Geri Dön</a>
+                    <a  asp-controller="Home" asp-action="Index" class="btn btn-outline-dark">Geri Dön</a>
                     <button type="submit" class="btn btn-outline-success">Kaydet</button>
                 </div>
             </form>

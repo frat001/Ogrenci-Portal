@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentPortal_Core.DTO_s.AccountDTO;
@@ -7,6 +9,7 @@ using StudentPortal_Core.Entities.UserEntites.Concrete;
 using StudentPortal_DataAccess.Services.Interface;
 using System.Globalization;
 using System.Text;
+using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace StudentPortal_WEB.Controllers
 {
@@ -18,8 +21,9 @@ namespace StudentPortal_WEB.Controllers
         private readonly IStudentRepository _studentRepository;
         private readonly ITeacherRepository _teacherRepository;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IMapper _mapper;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IPasswordHasher<AppUser> passwordHasher, IStudentRepository studentRepository, ITeacherRepository teacherRepository, RoleManager<IdentityRole> roleManager)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IPasswordHasher<AppUser> passwordHasher, IStudentRepository studentRepository, ITeacherRepository teacherRepository, RoleManager<IdentityRole> roleManager, IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -27,6 +31,7 @@ namespace StudentPortal_WEB.Controllers
             _studentRepository = studentRepository;
             _teacherRepository = teacherRepository;
             _roleManager = roleManager;
+            _mapper = mapper;
         }
         public async Task<IActionResult> Register()
         {
@@ -100,5 +105,110 @@ namespace StudentPortal_WEB.Controllers
             TempData["Error"] = "Lütfen aşağıdaki kurallara uyunuz! ";
             return View(model);
         }
+
+        [AllowAnonymous]
+        public IActionResult Login() => View();
+
+        [HttpPost, ValidateAntiForgeryToken, AllowAnonymous]
+        public async Task<IActionResult> Login(LoginDTO model)
+        {
+            if (ModelState.IsValid)
+            {
+                var appUser = await _userManager.FindByNameAsync(model.UserName);
+                if (appUser != null)
+                {
+                    SignInResult result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, false);
+                    if (result.Succeeded)
+                    {
+                        TempData["Success"] = $" Hoş geldiniz {appUser.FirstName} {appUser.LastName}";
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+                TempData["Error"] = "Kullanıcı adı veya şifre yanlış";
+                return View(model);
+
+            }
+            TempData["Error"] = "Lütfen aşağıdaki kurallara uyunuz";
+            return View(model);
+        }
+
+        public async Task<IActionResult> EditUser()
+        {
+            var userId = _userManager.GetUserId(HttpContext.User);
+            if (userId is not null)
+            {
+                var appUser = await _userManager.FindByIdAsync(userId);
+                var model = new EditUserDTO
+                {
+                    Id = appUser.Id,
+                    BirthDate = appUser.BirthDate is not null ? appUser.BirthDate.Value.ToShortDateString() : null,
+                    CreatedDate = appUser.CreatedDate,
+                    UpdatedDate = appUser.UpdatedDate,
+                    FirstName = appUser.FirstName,
+                    LastName = appUser.LastName,
+                    Email = appUser.Email,
+                    UserName = appUser.UserName,
+                    Password = appUser.PasswordHash
+                };
+
+                return View(model);
+            }
+            TempData["Error"] = "Önce Giriş Yapınız";
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditUser(EditUserDTO model)
+        {
+            if (ModelState.IsValid)
+            {
+                var userId = _userManager.GetUserId(HttpContext.User);
+                var appUser = await _userManager.FindByIdAsync(userId);
+                if (appUser != null)
+                {
+
+                    appUser.Email = model.Email;
+                    if (model.Password != null)
+                    {
+                        appUser.PasswordHash = _passwordHasher.HashPassword(appUser, model.Password);
+                    }
+                    appUser.UpdatedDate = DateTime.Now;
+                    appUser.Status = StudentPortal_Core.Entities.Abstract.Status.Modified;
+
+                    var result = await _userManager.UpdateAsync(appUser);
+                    if (result.Succeeded)
+                    {
+                        TempData["Success"] = "Profiliniz güncellendi!";
+                    }
+                    else
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            TempData["Error"] = error.Description;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                TempData["Error"] = "Lütfen aşağıdaki kurallara uyunuz!";
+            }
+            return View(model);
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                await _signInManager.SignOutAsync();
+                TempData["Success"] = "Başarılı bir şekilde çıkış yaptınız";
+                return RedirectToAction("Login");
+            }
+            TempData["Error"] = "Önce Giriş Yapınız";
+            return RedirectToAction("Index","Home");
+
+        }
+
+
     }
 }

@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using StudentPortal_Core.DTO_s.AccountDTO;
 using StudentPortal_Core.DTO_s.ClassroomDTO;
 using StudentPortal_Core.DTO_s.StudentDTO;
 using StudentPortal_Core.DTO_s.TeacherDTO;
 using StudentPortal_Core.Entities.Concrete;
+using StudentPortal_Core.Entities.UserEntites.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +26,8 @@ namespace StudentPortal_DataAccess.AutoMapper
             CreateMap<Student, CreateStudentDTO>().ReverseMap();
             CreateMap<Student, UpdateStudentDTO>().ReverseMap();
             CreateMap<Student, GetStudentDetailDTO>().ReverseMap();
+
+            CreateMap<AppUser, EditUserDTO>().ReverseMap();
         }
     }
 }
